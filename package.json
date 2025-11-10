@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node --watch server.js",
-    "prod": "cross-env NODE_ENV=production node server.js"
+    "prod": "NODE_ENV=production node --watch server.js"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +21,6 @@
   },
   "devDependencies": {
     "compression": "^1.8.1",
-    "cross-env": "^10.1.0",
     "helmet": "^8.1.0",
     "mongoose": "^8.19.3",
     "morgan": "^1.10.1"
