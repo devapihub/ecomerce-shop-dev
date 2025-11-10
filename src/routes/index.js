@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.use('/v1/api', require('./access'));
 router.use('/v1/api', (req, res) => {
-    return res.status(200).json({ message: 'Welcome API' });
+    return res.status(200).json({ message: 'Welcome API V1' });
 });
 
 module.exports = router;
