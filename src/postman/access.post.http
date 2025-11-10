@@ -3,6 +3,7 @@
 #### signup
 POST {{url_dev}}/shop/signup
 Content-Type: application/json
+x-api-key: key12345
 
 {
   "name": "Test Shop",
