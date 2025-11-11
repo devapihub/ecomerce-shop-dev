@@ -7,7 +7,9 @@ const development = {
     db: {
         host: process.env.DEV_DB_HOST || 'localhost',
         port: process.env.DEV_DB_PORT || '27017',
-        name: process.env.DEV_DB_NAME || 'shop_dev'
+        name: process.env.DEV_DB_NAME || 'shop_dev',
+        username: process.env.PROD_DB_USERNAME,
+        password: process.env.PROD_DB_PASSWORD
     }
 }
 
@@ -18,7 +20,9 @@ const production = {
     db: {
         host: process.env.PROD_DB_HOST || '61.14.234.12',
         port: process.env.PROD_DB_PORT || '27017',
-        name: process.env.PROD_DB_NAME || 'shop_dev'
+        name: process.env.PROD_DB_NAME || 'shop_dev',
+        username: process.env.PROD_DB_USERNAME,
+        password: process.env.PROD_DB_PASSWORD
     }
 }
 const config = {development, production}
