@@ -6,6 +6,8 @@ const crypto = require('crypto');
 const keyTokenService = require("./keyToken.service");
 const {createTokenPair} = require("../auth/authUtils");
 const {getInfoData} = require("../utils");
+const {BadRequestError, AuthFailureError} = require("../core/error.response");
+const {findByEmail} = require("./shop.service");
 const RoleShop = {
     SHOP: 'SHOP',
     WRITER: 'WRITER',
@@ -14,88 +16,98 @@ const RoleShop = {
 }
 
 class AccessService {
-    static async signup({name, email, password}) {
-        try {
-            // step 1: check if shop email already exists
-            const holderShop = await shopModel.findOne({email}).lean();
-            if (holderShop) {
-                return {
-                    code: 'xxx',
-                    message: 'Shop email already exists',
-                    status: 'error'
-                }
-            }
 
-            const passwordHashed = await bcrypt.hash(password, 10);
-            const newShop = await shopModel.create({
-                name,
-                email,
-                password: passwordHashed,
-                roles: [RoleShop.SHOP]
+    static logout = async (keystore) => {
+        const delKey = await keyTokenService.removeKeyById(keystore._id);
+        console.log('delete key result::', delKey);
+        return delKey;
+    }
+
+    static login = async ({email, password, refreshToken = null}) => {
+        const foundShop = await findByEmail({email});
+        if (!foundShop) {
+            throw new BadRequestError('Shop not registered!');
+        }
+        const match = await bcrypt.compare(password, foundShop.password);
+        if (!match) {
+            throw new AuthFailureError('Authentication failed! Password not correct');
+        }
+
+        const privateKey = crypto.randomBytes(64).toString('hex');
+        const publicKey = crypto.randomBytes(64).toString('hex');
+
+        const tokens = await createTokenPair(
+            {
+                userId: foundShop._id,
+                email
+            },
+            publicKey,
+            privateKey
+        );
+
+        await keyTokenService.createKeyToken({
+            userId: foundShop._id,
+            refreshToken: tokens.refreshToken,
+            privateKey,
+            publicKey
+        });
+
+        return {
+            shop: getInfoData({fields: ['name', '_id'], object: foundShop}),
+            tokens
+        }
+    }
+
+    static async signup({name, email, password}) {
+        // step 1: check if shop email already exists
+        const holderShop = await shopModel.findOne({email}).lean();
+        if (holderShop) {
+            throw new BadRequestError('Error: Shop already registered!');
+        }
+
+        const passwordHashed = await bcrypt.hash(password, 10);
+        const newShop = await shopModel.create({
+            name,
+            email,
+            password: passwordHashed,
+            roles: [RoleShop.SHOP]
+        });
+
+        if (newShop) {
+            const privateKey = crypto.randomBytes(64).toString('hex');
+            const publicKey = crypto.randomBytes(64).toString('hex');
+
+            // create token pair
+            const tokens = await createTokenPair(
+                {
+                    userId: newShop._id,
+                    email
+                },
+                publicKey,
+                privateKey
+            );
+            console.log(`created token success::`, tokens);
+
+            console.log(privateKey, publicKey);
+            const keyStore = await keyTokenService.createKeyToken({
+                userId: newShop._id,
+                publicKey,
+                privateKey,
+                refreshToken: tokens.refreshToken
             });
 
-            if (newShop) {
-                // created privateKey, publicKey for shop here (omitted for brevity)
-                /*const {privateKey, publicKey} = crypto.generateKeyPairSync('rsa', {
-                    modulusLength: 4096,
-                    publicKeyEncoding: {
-                        type: 'pkcs1',
-                        format: 'pem'
-                    },
-                    privateKeyEncoding: {
-                        type: 'pkcs1',
-                        format: 'pem'
-                    }
-                });*/
-
-                const privateKey = crypto.randomBytes(64).toString('hex');
-                const publicKey = crypto.randomBytes(64).toString('hex');
-
-                console.log(privateKey, publicKey);
-                const keyStore = await keyTokenService.createKeyToken({
-                    userId: newShop._id,
-                    publicKey,
-                    privateKey
-                });
-
-                if (!keyStore) {
-                    return {
-                        code: 'xxx',
-                        message: 'publicKeyString error',
-                        status: 'error'
-                    }
-                }
-
-                // create token pair
-                const tokens = await createTokenPair(
-                    {
-                        userId: newShop._id,
-                        email
-                    },
-                    publicKey,
-                    privateKey
-                );
-                console.log(`created token success::`, tokens);
-
-                return {
-                    code: 201,
-                    metadata: {
-                        shop: getInfoData({fields: ['name'], object: newShop}),
-                        tokens
-                    },
-                }
+            if (!keyStore) {
+                throw new BadRequestError('publicKeyString error!');
             }
+
             return {
-                code: 200,
-                metadata: null,
+                shop: getInfoData({fields: ['name', '_id'], object: newShop}),
+                tokens
             }
-        } catch (err) {
-            console.error('Error in signup service:', err);
-            return {
-                code: 'xxxxxx',
-                message: err.message,
-                status: 'error'
-            }
+        }
+        return {
+            code: 200,
+            metadata: null,
         }
     }
 }

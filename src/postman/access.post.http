@@ -7,6 +7,24 @@ x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
 
 {
   "name": "Test Shop",
-  "email": "shop8@gmail.com",
+  "email": "shopdev@gmail.com",
   "password": "1234qwer"
 }
+
+#### login
+POST {{url_dev}}/shop/login
+Content-Type: application/json
+x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+
+{
+  "email": "shopdev@gmail.com",
+  "password": "1234qwer"
+}
+
+
+#### Logout
+POST {{url_dev}}/shop/logout
+Content-Type: application/json
+x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-client-id: 6915c598715f1b732b6b8d07
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTE1YzU5ODcxNWYxYjczMmI2YjhkMDciLCJlbWFpbCI6InNob3BkZXZAZ21haWwuY29tIiwiaWF0IjoxNzYzMDM2NTgzLCJleHAiOjE3NjMyMDkzODN9.avLCF_nhNypIeIGmYsfhUBZwvsTxg3dJfpIgr6zDb9E

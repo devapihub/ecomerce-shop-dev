@@ -1,15 +1,31 @@
 'use strict'
 const accessService = require('../service/access.service');
+const {OK, CREATED} = require('../core/success.response');
 
 class AccessController {
+
+    async logout(req, res) {
+        new OK({
+            message: 'Logout successfully',
+            metadata: await accessService.logout(req.keyStore)
+        }).send(res);
+    }
+
+    async login(req, res) {
+        new OK({
+            message: 'Login successfully',
+            metadata: await accessService.login(req.body)
+        }).send(res);
+    }
+
     async signup(req, res) {
-        try {
-            console.log('Signup request body:', req.body);
-            return res.status(201).json(await accessService.signup(req.body));
-        } catch (error) {
-            console.error('Error in signup:', error);
-            return res.status(500).json({message: 'Internal Server Error'});
-        }
+        new CREATED(
+            {
+                message: 'Signup successfully',
+                metadata: await accessService.signup(req.body),
+                options: {limit: 3}
+            }
+        ).send(res);
     }
 }
 
