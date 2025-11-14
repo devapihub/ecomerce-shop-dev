@@ -28,3 +28,10 @@ Content-Type: application/json
 x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
 x-client-id: 6915c598715f1b732b6b8d07
 authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTE1YzU5ODcxNWYxYjczMmI2YjhkMDciLCJlbWFpbCI6InNob3BkZXZAZ21haWwuY29tIiwiaWF0IjoxNzYzMDM2NTgzLCJleHAiOjE3NjMyMDkzODN9.avLCF_nhNypIeIGmYsfhUBZwvsTxg3dJfpIgr6zDb9E
+
+#### Refresh token
+POST {{url_dev}}/shop/refresh-token
+Content-Type: application/json
+x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-client-id: 6915c598715f1b732b6b8d07
+refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTE1YzU5ODcxNWYxYjczMmI2YjhkMDciLCJlbWFpbCI6InNob3BkZXZAZ21haWwuY29tIiwiaWF0IjoxNzYzMTM0Njg5LCJleHAiOjE3NjM3Mzk0ODl9.j3Yg1OKNdEJOo-avjhPHFOvrKi27JSxGtjJnAQ-VvSQ
