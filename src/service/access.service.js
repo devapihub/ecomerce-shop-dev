@@ -18,7 +18,6 @@ const RoleShop = {
 class AccessService {
     static handlerRefreshToken = async ({keystore, user, refreshToken}) => {
         const {userId, email} = user;
-        console.log(keystore)
         if (keystore.refreshTokensUsed.includes(refreshToken)) {
             await keyTokenService.deleteKeyByUserId(userId);
             throw new ForbiddenError('Something wrong happen. Please re-login!');
