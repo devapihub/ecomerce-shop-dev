@@ -47,41 +47,6 @@ class AccessService {
             user: {userId, email},
             tokens
         }
-
-        /*const foundToken = await keyTokenService.findByRefreshTokenUsed(refreshToken);
-        if (foundToken) {
-            const {userId, email} = await verifyJWT(refreshToken, foundToken.privateKey);
-            console.log('decoded::', userId, email);
-            await keyTokenService.deleteKeyByUserId(userId);
-            throw new ForbiddenError('Something wrong happen. Please re-login!');
-        }
-
-        const holderToken = await keyTokenService.findByRefreshToken(refreshToken);
-        if (!holderToken) {
-            throw new ForbiddenError('Shop not registered!');
-        }
-
-        const {userId, email} = await verifyJWT(refreshToken, holderToken.privateKey);
-        const foundShop = await findByEmail({email});
-        if (!foundShop) {
-            throw new BadRequestError('Shop not registered!');
-        }
-
-        const tokens = await createTokenPair(
-            {
-                userId: foundShop._id,
-                email
-            },
-            holderToken.publicKey,
-            holderToken.privateKey
-        );
-
-        await keyTokenService.addRefreshTokenToUsed(holderToken, tokens.refreshToken, refreshToken);
-
-        return {
-            user: {userId, email},
-            tokens
-        }*/
     }
     static logout = async (keystore) => {
         const delKey = await keyTokenService.removeKeyById(keystore._id);
