@@ -1,21 +1,45 @@
 'use strict'
 
 import {BadRequestError} from "../core/error.response.js";
-import {clothing, electronic, product, furniture} from "../models/product.model.js";
+import {clothing, electronic, furniture, product} from "../models/product.model.js";
+import {publishProductByShop, queryProducts, unPublishProductByShop, searchProductByUser} from '../models/repositories/product.repo.js';
 
-// define factory class to create product
 export class ProductFactory {
 
     static productRegistry = {}
+
     static registerProductType(type, classRef) {
         ProductFactory.productRegistry[type] = classRef;
     }
+
     static createProduct(productType, payload) {
         const productClass = ProductFactory.productRegistry[productType];
         if (!productClass) {
             throw new Error(`Unsupported product type: ${productType}`);
         }
         return new productClass(payload).createProduct();
+    }
+
+    static async publishProductByShop({product_shop, product_id}) {
+        return await publishProductByShop({product_shop, product_id});
+    }
+
+    static async unPublishProductByShop({product_shop, product_id}) {
+        return await unPublishProductByShop({product_shop, product_id});
+    }
+
+    static async findAllDraftsForShop({product_shop, limit = 50, skip = 0}) {
+        const query = {product_shop, isDraft: true};
+        return await queryProducts({query, limit, skip});
+    }
+
+    static async findAllPublishedForShop({product_shop, limit = 50, skip = 0}) {
+        const query = {product_shop, isPublished: true};
+        return await queryProducts({query, limit, skip});
+    }
+
+    static async searchProducts({keySearch}) {
+        return await searchProductByUser({keySearch});
     }
 }
 

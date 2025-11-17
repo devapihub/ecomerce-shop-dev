@@ -6,8 +6,8 @@ Content-Type: application/json
 x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
 
 {
-  "name": "Test Shop",
-  "email": "shopdev@gmail.com",
+  "name": "Admin Shop",
+  "email": "shopadmin@gmail.com",
   "password": "1234qwer"
 }
 
@@ -17,7 +17,7 @@ Content-Type: application/json
 x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
 
 {
-  "email": "shopdev@gmail.com",
+  "email": "shopadmin@gmail.com",
   "password": "1234qwer"
 }
 

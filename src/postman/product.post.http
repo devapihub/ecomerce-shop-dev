@@ -1,5 +1,6 @@
 @url_dev=http://localhost:3000/v1/api
-
+@clientId=691aa78177562f74097e1690
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTFhYTc4MTc3NTYyZjc0MDk3ZTE2OTAiLCJlbWFpbCI6InNob3BhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NjMzNTcxNTksImV4cCI6MTc2MzUyOTk1OX0.ABLtvfh_BJb2gyXB_NUGJ3F60VE3UDJEhyNHEJ7boEc
 
 #### create product
 POST {{url_dev}}/product
@@ -9,16 +10,50 @@ x-client-id: 6915c598715f1b732b6b8d07
 authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTE1YzU5ODcxNWYxYjczMmI2YjhkMDciLCJlbWFpbCI6InNob3BkZXZAZ21haWwuY29tIiwiaWF0IjoxNzYzMjgwNTM5LCJleHAiOjE3NjM0NTMzMzl9.9Aj8WUZxyH5e3Lz4Ozm-uG9qRkkgugXqnQgKnnUYcgE
 
 {
-  "product_name": "Furniture 17 128GB",
+  "product_name": "Furniture 13 128GB",
   "product_description": "new Furniture from Apple",
-  "product_price": 70,
+  "product_price": 30,
   "product_shop": "6915c598715f1b732b6b8d07",
   "product_type": "Furniture",
   "product_thumb": "https://example.com/jean.jpg",
-  "product_quantity": 1,
+  "product_quantity": 10,
   "product_attributes": {
     "brand": "TTF",
-    "size": "17",
+    "size": "5 inches",
     "material": "Black"
   }
 }
+
+
+#### Publish product
+POST {{url_dev}}/product/publish/691ab1886f68de6a83269601
+Content-Type: application/json
+x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+#### UnPublish product
+POST {{url_dev}}/product/unpublish/691ab1886f68de6a83269601
+Content-Type: application/json
+x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+#### Get all draft products
+GET {{url_dev}}/product/drafts/all
+Content-Type: application/json
+x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+#### Get all published products
+GET {{url_dev}}/product/published/all
+Content-Type: application/json
+x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+#### Search products
+GET {{url_dev}}/product/search/Swift 14
+Content-Type: application/json
+x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
