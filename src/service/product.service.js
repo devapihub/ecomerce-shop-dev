@@ -2,7 +2,13 @@
 
 import {BadRequestError} from "../core/error.response.js";
 import {clothing, electronic, furniture, product} from "../models/product.model.js";
-import {publishProductByShop, queryProducts, unPublishProductByShop, searchProductByUser} from '../models/repositories/product.repo.js';
+import {
+    publishProductByShop,
+    queryProducts,
+    unPublishProductByShop,
+    searchProductByUser,
+    findAllProducts, findProduct
+} from '../models/repositories/product.repo.js';
 
 export class ProductFactory {
 
@@ -13,6 +19,14 @@ export class ProductFactory {
     }
 
     static createProduct(productType, payload) {
+        const productClass = ProductFactory.productRegistry[productType];
+        if (!productClass) {
+            throw new Error(`Unsupported product type: ${productType}`);
+        }
+        return new productClass(payload).createProduct();
+    }
+
+    static updateProduct(productType, payload) {
         const productClass = ProductFactory.productRegistry[productType];
         if (!productClass) {
             throw new Error(`Unsupported product type: ${productType}`);
@@ -40,6 +54,17 @@ export class ProductFactory {
 
     static async searchProducts({keySearch}) {
         return await searchProductByUser({keySearch});
+    }
+
+    static async findAllProducts({limit = 50, sort = 'ctime', page = 1, filter = {isPublished: true}}) {
+        return await findAllProducts({
+                limit, sort, page, filter,
+                select: ['product_name', 'product_price', 'product_description', 'product_thumb']
+            }
+        );
+    }
+    static async findProduct({product_id}) {
+        return await findProduct({product_id, unSelect: ['__v']});
     }
 }
 

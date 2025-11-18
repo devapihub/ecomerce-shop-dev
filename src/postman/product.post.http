@@ -26,7 +26,7 @@ authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTE1YzU5ODcx
 
 
 #### Publish product
-POST {{url_dev}}/product/publish/691ab1886f68de6a83269601
+POST {{url_dev}}/product/publish/691ab18c6f68de6a83269639
 Content-Type: application/json
 x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
 x-client-id: {{clientId}}
@@ -55,5 +55,15 @@ authorization: {{accessToken}}
 
 #### Search products
 GET {{url_dev}}/product/search/Swift 14
+Content-Type: application/json
+x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+
+### Find all products
+GET {{url_dev}}/product
+Content-Type: application/json
+x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+
+### Find product
+GET {{url_dev}}/product/691ab1856f68de6a832695de
 Content-Type: application/json
 x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
