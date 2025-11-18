@@ -5,9 +5,19 @@ const {ProductFactory} = require("../service/product.service");
 
 class ProductController {
     createProduct = async (req, res, next) => {
-        new SuccessResponse( {
+        new SuccessResponse({
             message: 'Create new product success',
             metadata: await ProductFactory.createProduct(req.body.product_type, {
+                ...req.body,
+                product_shop: req.user.userId
+            })
+        }).send(res);
+    }
+
+    updateProduct = async (req, res, next) => {
+        new SuccessResponse({
+            message: 'Update product success',
+            metadata: await ProductFactory.updateProduct(req.body.product_type, req.params.product_id, {
                 ...req.body,
                 product_shop: req.user.userId
             })

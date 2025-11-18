@@ -3,12 +3,15 @@
 import {BadRequestError} from "../core/error.response.js";
 import {clothing, electronic, furniture, product} from "../models/product.model.js";
 import {
+    findAllProducts,
+    findProduct,
     publishProductByShop,
     queryProducts,
-    unPublishProductByShop,
     searchProductByUser,
-    findAllProducts, findProduct
+    unPublishProductByShop,
+    updateProductById
 } from '../models/repositories/product.repo.js';
+import {removeUndefinedObject, updateNestedObject} from "../utils/index.js";
 
 export class ProductFactory {
 
@@ -26,12 +29,12 @@ export class ProductFactory {
         return new productClass(payload).createProduct();
     }
 
-    static updateProduct(productType, payload) {
+    static updateProduct(productType, productId, payload) {
         const productClass = ProductFactory.productRegistry[productType];
         if (!productClass) {
             throw new Error(`Unsupported product type: ${productType}`);
         }
-        return new productClass(payload).createProduct();
+        return new productClass(payload).updateProduct(productId);
     }
 
     static async publishProductByShop({product_shop, product_id}) {
@@ -63,6 +66,7 @@ export class ProductFactory {
             }
         );
     }
+
     static async findProduct({product_id}) {
         return await findProduct({product_id, unSelect: ['__v']});
     }
@@ -93,6 +97,10 @@ class Product {
     async createProduct(productId) {
         return await product.create({...this, _id: productId});
     }
+
+    async updateProduct(productId, bodyUpdate) {
+        return await updateProductById({productId, bodyUpdate, model: product});
+    }
 }
 
 class ClothingModel extends Product {
@@ -113,6 +121,20 @@ class ClothingModel extends Product {
             throw new BadRequestError('Failed to create product');
         }
         return newProduct;
+    }
+
+    async updateProduct(productId) {
+        if (!productId) {
+            throw new BadRequestError('Product ID is required for update');
+        }
+
+        const objectParams = this;
+        if (objectParams.product_attributes) {
+            // update child
+            await updateProductById({productId, objectParams, model: clothing});
+        }
+
+        return await super.updateProduct(productId, objectParams);
     }
 }
 
@@ -135,6 +157,24 @@ class ElectronicModel extends Product {
         }
         return newProduct;
     }
+
+    async updateProduct(productId) {
+        if (!productId) {
+            throw new BadRequestError('Product ID is required for update');
+        }
+
+        let objectParams = removeUndefinedObject(this);
+        if (objectParams.product_attributes) {
+            // update child
+            await updateProductById({
+                productId,
+                bodyUpdate: updateNestedObject(objectParams.product_attributes),
+                model: electronic
+            });
+        }
+
+        return await super.updateProduct(productId, updateNestedObject(objectParams));
+    }
 }
 
 export class FurnitureModel extends Product {
@@ -155,6 +195,20 @@ export class FurnitureModel extends Product {
             throw new BadRequestError('Failed to create product');
         }
         return newProduct;
+    }
+
+    async updateProduct(productId) {
+        if (!productId) {
+            throw new BadRequestError('Product ID is required for update');
+        }
+
+        const objectParams = this;
+        if (objectParams.product_attributes) {
+            // update child
+            await updateProductById({productId, objectParams, model: furniture});
+        }
+
+        return await super.updateProduct(productId, objectParams);
     }
 }
 

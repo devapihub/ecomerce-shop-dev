@@ -1,13 +1,13 @@
 @url_dev=http://localhost:3000/v1/api
 @clientId=691aa78177562f74097e1690
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTFhYTc4MTc3NTYyZjc0MDk3ZTE2OTAiLCJlbWFpbCI6InNob3BhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NjMzNTcxNTksImV4cCI6MTc2MzUyOTk1OX0.ABLtvfh_BJb2gyXB_NUGJ3F60VE3UDJEhyNHEJ7boEc
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTFhYTc4MTc3NTYyZjc0MDk3ZTE2OTAiLCJlbWFpbCI6InNob3BhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NjM0NzMzMTMsImV4cCI6MTc2MzY0NjExM30.29OG0UpBOXl2-r5iEEYWu1Ni3JXysk77Ed4-v4uvAeE
 
 #### create product
 POST {{url_dev}}/product
 Content-Type: application/json
 x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
-x-client-id: 6915c598715f1b732b6b8d07
-authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTE1YzU5ODcxNWYxYjczMmI2YjhkMDciLCJlbWFpbCI6InNob3BkZXZAZ21haWwuY29tIiwiaWF0IjoxNzYzMjgwNTM5LCJleHAiOjE3NjM0NTMzMzl9.9Aj8WUZxyH5e3Lz4Ozm-uG9qRkkgugXqnQgKnnUYcgE
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
 
 {
   "product_name": "Furniture 13 128GB",
@@ -21,6 +21,23 @@ authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTE1YzU5ODcx
     "brand": "TTF",
     "size": "5 inches",
     "material": "Black"
+  }
+}
+
+#### update product
+PATCH {{url_dev}}/product/691ab1856f68de6a832695de
+Content-Type: application/json
+x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+{
+  "product_name": "Furniture 13 128GB",
+  "product_type": "Electronics",
+  "product_attributes": {
+    "manufacturer": "Acer",
+    "model": "71U7",
+    "color": "Black"
   }
 }
 
