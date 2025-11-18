@@ -12,6 +12,7 @@ import {
     updateProductById
 } from '../models/repositories/product.repo.js';
 import {removeUndefinedObject, updateNestedObject} from "../utils/index.js";
+import {Types} from "mongoose";
 
 export class ProductFactory {
 
@@ -35,6 +36,14 @@ export class ProductFactory {
             throw new Error(`Unsupported product type: ${productType}`);
         }
         return new productClass(payload).updateProduct(productId);
+    }
+
+    static deleteProduct(productType, productId) {
+        const productClass = ProductFactory.productRegistry[productType];
+        if (!productClass) {
+            throw new Error(`Unsupported product type: ${productType}`);
+        }
+        return new productClass({}).deleteProduct(productId);
     }
 
     static async publishProductByShop({product_shop, product_id}) {
@@ -101,6 +110,10 @@ class Product {
     async updateProduct(productId, bodyUpdate) {
         return await updateProductById({productId, bodyUpdate, model: product});
     }
+
+    async deleteProduct(productId) {
+        return await product.deleteOne({_id: new Types.ObjectId(productId)});
+    }
 }
 
 class ClothingModel extends Product {
@@ -128,13 +141,22 @@ class ClothingModel extends Product {
             throw new BadRequestError('Product ID is required for update');
         }
 
-        const objectParams = this;
+        let objectParams = removeUndefinedObject(this);
         if (objectParams.product_attributes) {
             // update child
-            await updateProductById({productId, objectParams, model: clothing});
+            await updateProductById({
+                productId,
+                bodyUpdate: updateNestedObject(objectParams.product_attributes),
+                model: clothing
+            });
         }
 
-        return await super.updateProduct(productId, objectParams);
+        return await super.updateProduct(productId, updateNestedObject(objectParams));
+    }
+
+    async deleteProduct(productId) {
+        await clothing.deleteOne({_id: new Types.ObjectId(productId)});
+        return super.deleteProduct(productId);
     }
 }
 
@@ -175,6 +197,11 @@ class ElectronicModel extends Product {
 
         return await super.updateProduct(productId, updateNestedObject(objectParams));
     }
+
+    async deleteProduct(productId) {
+        await electronic.deleteOne({_id: new Types.ObjectId(productId)});
+        return super.deleteProduct(productId);
+    }
 }
 
 export class FurnitureModel extends Product {
@@ -202,13 +229,22 @@ export class FurnitureModel extends Product {
             throw new BadRequestError('Product ID is required for update');
         }
 
-        const objectParams = this;
+        let objectParams = removeUndefinedObject(this);
         if (objectParams.product_attributes) {
             // update child
-            await updateProductById({productId, objectParams, model: furniture});
+            await updateProductById({
+                productId,
+                bodyUpdate: updateNestedObject(objectParams.product_attributes),
+                model: furniture
+            });
         }
 
-        return await super.updateProduct(productId, objectParams);
+        return await super.updateProduct(productId, updateNestedObject(objectParams));
+    }
+
+    async deleteProduct(productId) {
+        await furniture.deleteOne({_id: new Types.ObjectId(productId)});
+        return super.deleteProduct(productId);
     }
 }
 

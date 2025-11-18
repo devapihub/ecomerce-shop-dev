@@ -1,6 +1,6 @@
 @url_dev=http://localhost:3000/v1/api
 @clientId=691aa78177562f74097e1690
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTFhYTc4MTc3NTYyZjc0MDk3ZTE2OTAiLCJlbWFpbCI6InNob3BhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NjM0NzMzMTMsImV4cCI6MTc2MzY0NjExM30.29OG0UpBOXl2-r5iEEYWu1Ni3JXysk77Ed4-v4uvAeE
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTFhYTc4MTc3NTYyZjc0MDk3ZTE2OTAiLCJlbWFpbCI6InNob3BhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NjM0ODA4MDEsImV4cCI6MTc2MzY1MzYwMX0.UrmQZW0TbtKgC4aXqp513SqV63yZP1Uba803nL1l-2k
 
 #### create product
 POST {{url_dev}}/product
@@ -39,6 +39,17 @@ authorization: {{accessToken}}
     "model": "71U7",
     "color": "Black"
   }
+}
+
+#### delete product
+DELETE {{url_dev}}/product/691ab1846f68de6a832695d0
+Content-Type: application/json
+x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+{
+  "product_type": "Electronics"
 }
 
 

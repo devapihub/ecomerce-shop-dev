@@ -24,6 +24,13 @@ class ProductController {
         }).send(res);
     }
 
+    deleteProduct = async (req, res, next) => {
+        new SuccessResponse({
+            message: 'Delete product success',
+            metadata: await ProductFactory.deleteProduct(req.body.product_type, req.params.product_id)
+        }).send(res);
+    }
+
     publishProductByShop = async (req, res, next) => {
         new SuccessResponse({
             message: 'Publish product success',

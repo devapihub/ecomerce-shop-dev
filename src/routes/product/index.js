@@ -16,6 +16,7 @@ router.use(authentication);
 
 router.post('', asyncHandler(productController.createProduct));
 router.patch('/:product_id', asyncHandler(productController.updateProduct));
+router.delete('/:product_id', asyncHandler(productController.deleteProduct));
 router.post('/publish/:id', asyncHandler(productController.publishProductByShop));
 router.post('/unpublish/:id', asyncHandler(productController.unPublishProductByShop));
 
