@@ -1,23 +1,26 @@
 @url_dev=http://localhost:3000/v1/api
+@apiKey=cc4932f42a72fc1d812fcd496ea05585
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTFkODc2ZTIzNzdhNDhlYTVmZmI2MjciLCJlbWFpbCI6InRyaXZpcDAwMkBnbWFpbC5jb20iLCJpYXQiOjE3NjM1NDI4OTQsImV4cCI6MTc2MzcxNTY5NH0.ssuPbwlSmJAMaN4GbsAXo1Kb7JKcDxIhFaX2GKdEiR8
+@clientId=691d876e2377a48ea5ffb627
 
 #### signup
 POST {{url_dev}}/shop/signup
 Content-Type: application/json
-x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-api-key: {{apiKey}}
 
 {
   "name": "Admin Shop",
-  "email": "shopadmin@gmail.com",
+  "email": "trivip002@gmail.com",
   "password": "1234qwer"
 }
 
 #### login
 POST {{url_dev}}/shop/login
 Content-Type: application/json
-x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-api-key: {{apiKey}}
 
 {
-  "email": "shopadmin@gmail.com",
+  "email": "trivip002@gmail.com",
   "password": "1234qwer"
 }
 
@@ -25,14 +28,14 @@ x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
 #### Logout
 POST {{url_dev}}/shop/logout
 Content-Type: application/json
-x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
-x-client-id: 6915c598715f1b732b6b8d07
-authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTE1YzU5ODcxNWYxYjczMmI2YjhkMDciLCJlbWFpbCI6InNob3BkZXZAZ21haWwuY29tIiwiaWF0IjoxNzYzMDM2NTgzLCJleHAiOjE3NjMyMDkzODN9.avLCF_nhNypIeIGmYsfhUBZwvsTxg3dJfpIgr6zDb9E
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
 
 #### Refresh token
 POST {{url_dev}}/shop/refresh-token
 Content-Type: application/json
-x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
-x-client-id: 6915c598715f1b732b6b8d07
-x-rtoken-id: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTE1YzU5ODcxNWYxYjczMmI2YjhkMDciLCJlbWFpbCI6InNob3BkZXZAZ21haWwuY29tIiwiaWF0IjoxNzYzMTM1NTQ0LCJleHAiOjE3NjM3NDAzNDR9.oU2YyD61YIm9wA5bRBhq63TjlPZX3rzSG1ncLxp1UaU
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+x-rtoken-id: {{accessToken}}
 

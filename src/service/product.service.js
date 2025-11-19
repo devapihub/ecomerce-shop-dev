@@ -13,6 +13,7 @@ import {
 } from '../models/repositories/product.repo.js';
 import {removeUndefinedObject, updateNestedObject} from "../utils/index.js";
 import {Types} from "mongoose";
+import {insertInventory} from "../models/repositories/inventory.repo.js";
 
 export class ProductFactory {
 
@@ -104,7 +105,16 @@ class Product {
     }
 
     async createProduct(productId) {
-        return await product.create({...this, _id: productId});
+        const newProduct = await product.create({...this, _id: productId});
+        if (newProduct) {
+            // add product_stock in inventory collection
+            await insertInventory({
+                productId: productId,
+                shopId: this.product_shop,
+                stock: this.product_quantity
+            })
+        }
+        return newProduct;
     }
 
     async updateProduct(productId, bodyUpdate) {

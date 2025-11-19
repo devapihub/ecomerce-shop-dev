@@ -1,50 +1,50 @@
 @url_dev=http://localhost:3000/v1/api
-@clientId=691aa78177562f74097e1690
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTFhYTc4MTc3NTYyZjc0MDk3ZTE2OTAiLCJlbWFpbCI6InNob3BhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NjM0ODA4MDEsImV4cCI6MTc2MzY1MzYwMX0.UrmQZW0TbtKgC4aXqp513SqV63yZP1Uba803nL1l-2k
+@apiKey=cc4932f42a72fc1d812fcd496ea05585
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTFkODc2ZTIzNzdhNDhlYTVmZmI2MjciLCJlbWFpbCI6InRyaXZpcDAwMkBnbWFpbC5jb20iLCJpYXQiOjE3NjM1NDMxNTQsImV4cCI6MTc2MzcxNTk1NH0.zCRs4vAWCA3qgOnkG1xYWeUA4dwXfx1Jx-0xA9lRIK0
+@clientId=691d876e2377a48ea5ffb627
 
 #### create product
 POST {{url_dev}}/product
 Content-Type: application/json
-x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-api-key: {{apiKey}}
 x-client-id: {{clientId}}
 authorization: {{accessToken}}
 
 {
-  "product_name": "Furniture 13 128GB",
+  "product_name": "Furniture 20 128GB",
   "product_description": "new Furniture from Apple",
   "product_price": 30,
   "product_shop": "6915c598715f1b732b6b8d07",
   "product_type": "Furniture",
   "product_thumb": "https://example.com/jean.jpg",
-  "product_quantity": 10,
+  "product_quantity": 5,
   "product_attributes": {
     "brand": "TTF",
     "size": "5 inches",
-    "material": "Black"
+    "material": "Blue"
   }
 }
 
 #### update product
-PATCH {{url_dev}}/product/691ab1856f68de6a832695de
+PATCH {{url_dev}}/product/691d5157e7e8c90c4303f4e2
 Content-Type: application/json
-x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-api-key: {{apiKey}}
 x-client-id: {{clientId}}
 authorization: {{accessToken}}
 
 {
-  "product_name": "Furniture 13 128GB",
-  "product_type": "Electronics",
+  "product_type": "Furniture",
   "product_attributes": {
-    "manufacturer": "Acer",
-    "model": "71U7",
-    "color": "Black"
+    "brand": "Apple",
+    "size": "5 inches",
+    "material": "Blue"
   }
 }
 
 #### delete product
 DELETE {{url_dev}}/product/691ab1846f68de6a832695d0
 Content-Type: application/json
-x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-api-key: {{apiKey}}
 x-client-id: {{clientId}}
 authorization: {{accessToken}}
 
@@ -54,30 +54,30 @@ authorization: {{accessToken}}
 
 
 #### Publish product
-POST {{url_dev}}/product/publish/691ab18c6f68de6a83269639
+POST {{url_dev}}/product/publish/691d88282377a48ea5ffb732
 Content-Type: application/json
-x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-api-key: {{apiKey}}
 x-client-id: {{clientId}}
 authorization: {{accessToken}}
 
 #### UnPublish product
 POST {{url_dev}}/product/unpublish/691ab1886f68de6a83269601
 Content-Type: application/json
-x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-api-key: {{apiKey}}
 x-client-id: {{clientId}}
 authorization: {{accessToken}}
 
 #### Get all draft products
 GET {{url_dev}}/product/drafts/all
 Content-Type: application/json
-x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-api-key: {{apiKey}}
 x-client-id: {{clientId}}
 authorization: {{accessToken}}
 
 #### Get all published products
 GET {{url_dev}}/product/published/all
 Content-Type: application/json
-x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-api-key: {{apiKey}}
 x-client-id: {{clientId}}
 authorization: {{accessToken}}
 
@@ -89,9 +89,9 @@ x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
 ### Find all products
 GET {{url_dev}}/product
 Content-Type: application/json
-x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-api-key: {{apiKey}}
 
 ### Find product
-GET {{url_dev}}/product/691ab1856f68de6a832695de
+GET {{url_dev}}/product/691d88282377a48ea5ffb732
 Content-Type: application/json
-x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-api-key: {{apiKey}}

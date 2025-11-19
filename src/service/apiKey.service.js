@@ -3,11 +3,14 @@
 const apiKeyModel = require('../models/apiKey.model');
 const crypto = require('node:crypto');
 const findById = async (key) => {
-   /* const newKey = apiKeyModel.create({
-        key: crypto.randomBytes(16).toString('hex'),
-        permissions: ['0000']
-    });*/
     return apiKeyModel.findOne({key, status: true}).lean();
 }
 
-module.exports = {findById}
+const createApiKey = async () => {
+    return apiKeyModel.create({
+        key: crypto.randomBytes(16).toString('hex'),
+        permissions: ['0000']
+    });
+}
+
+module.exports = {findById, createApiKey}

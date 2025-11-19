@@ -1,0 +1,4 @@
+@url_dev=http://localhost:3000/v1/api
+
+#### create api key
+POST {{url_dev}}/key

@@ -2,7 +2,7 @@
 
 const {model, Schema} = require('mongoose');
 const DOCUMENT_NAME = "Shop";
-const COLLECTION_NAME = "Shops";
+const COLLECTION_NAME = "shops";
 
 const ShopSchema = new Schema({
     name: {type: String, required: true, maxLength: 150},
