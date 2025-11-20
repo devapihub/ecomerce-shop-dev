@@ -84,7 +84,7 @@ authorization: {{accessToken}}
 #### Search products
 GET {{url_dev}}/product/search/Swift 14
 Content-Type: application/json
-x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-api-key: {{apiKey}}
 
 ### Find all products
 GET {{url_dev}}/product
