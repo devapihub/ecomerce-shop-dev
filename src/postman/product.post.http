@@ -1,4 +1,4 @@
-@url_dev=http://localhost:3000/v1/api
+@url_dev=http://www.devapihub.com/v1/api
 @apiKey=cc4932f42a72fc1d812fcd496ea05585
 @accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTFkODc2ZTIzNzdhNDhlYTVmZmI2MjciLCJlbWFpbCI6InRyaXZpcDAwMkBnbWFpbC5jb20iLCJpYXQiOjE3NjM1NDMxNTQsImV4cCI6MTc2MzcxNTk1NH0.zCRs4vAWCA3qgOnkG1xYWeUA4dwXfx1Jx-0xA9lRIK0
 @clientId=691d876e2377a48ea5ffb627
@@ -84,7 +84,7 @@ authorization: {{accessToken}}
 #### Search products
 GET {{url_dev}}/product/search/Swift 14
 Content-Type: application/json
-x-api-key: a036cd5b9b3f19f80d41c63efd8c538c
+x-api-key: {{apiKey}}
 
 ### Find all products
 GET {{url_dev}}/product
