@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.post('/shop/signup', asyncHandler(accessController.signup));
 router.post('/shop/login', asyncHandler(accessController.login));
+router.post('/shop/google', asyncHandler(accessController.googleLogin));
 
 // authentication //
 router.use(authentication)

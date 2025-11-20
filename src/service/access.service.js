@@ -8,6 +8,8 @@ const {createTokenPair, verifyJWT} = require("../auth/authUtils");
 const {getInfoData} = require("../utils");
 const {BadRequestError, AuthFailureError, ForbiddenError} = require("../core/error.response");
 const {findByEmail} = require("./shop.service");
+const {OAuth2Client} = require('google-auth-library');
+
 const RoleShop = {
     SHOP: 'SHOP',
     WRITER: 'WRITER',
@@ -139,6 +141,72 @@ class AccessService {
         return {
             code: 200,
             metadata: null,
+        }
+    }
+
+    static googleLogin = async ({token}) => {
+        try {
+            const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+            
+            // Verify token Google gửi lên
+            const ticket = await client.verifyIdToken({
+                idToken: token,
+                audience: process.env.GOOGLE_CLIENT_ID,
+            });
+
+            // Lấy thông tin user
+            const payload = ticket.getPayload();
+            const {email, name, picture} = payload;
+
+            // Kiểm tra shop có tồn tại chưa
+            let shop = await findByEmail({email});
+            
+            if (!shop) {
+                // Tạo shop mới nếu chưa tồn tại
+                shop = await shopModel.create({
+                    name,
+                    email,
+                    password: '', // Không cần password cho OAuth
+                    provider: 'google',
+                    avatar: picture || '',
+                    roles: [RoleShop.SHOP],
+                    verify: true,
+                    status: 'active'
+                });
+            } else {
+                // Cập nhật provider nếu shop đã tồn tại
+                if (!shop.provider) {
+                    shop.provider = 'google';
+                    shop.avatar = picture || shop.avatar || '';
+                    await shop.save();
+                }
+            }
+
+            const privateKey = crypto.randomBytes(64).toString('hex');
+            const publicKey = crypto.randomBytes(64).toString('hex');
+
+            const tokens = await createTokenPair(
+                {
+                    userId: shop._id,
+                    email
+                },
+                publicKey,
+                privateKey
+            );
+
+            await keyTokenService.createKeyToken({
+                userId: shop._id,
+                refreshToken: tokens.refreshToken,
+                privateKey,
+                publicKey
+            });
+
+            return {
+                shop: getInfoData({fields: ['name', '_id', 'email', 'avatar'], object: shop}),
+                tokens
+            }
+        } catch (error) {
+            throw new AuthFailureError('Token Google không hợp lệ: ' + error.message);
         }
     }
 }

@@ -38,6 +38,13 @@ class AccessController {
             }
         ).send(res);
     }
+
+    async googleLogin(req, res) {
+        new OK({
+            message: 'Login Google successfully',
+            metadata: await accessService.googleLogin(req.body)
+        }).send(res);
+    }
 }
 
 module.exports = new AccessController();
