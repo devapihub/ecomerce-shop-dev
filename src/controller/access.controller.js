@@ -29,20 +29,39 @@ class AccessController {
         }).send(res);
     }
 
-    async signup(req, res) {
-        new CREATED(
-            {
-                message: 'Signup successfully',
-                metadata: await accessService.signup(req.body),
-                options: {limit: 3}
-            }
-        ).send(res);
+    async sendOTP(req, res) {
+        new OK({
+            message: 'OTP sent successfully',
+            metadata: await accessService.sendOTP(req.body)
+        }).send(res);
+    }
+
+    async verifyAndSignup(req, res) {
+        new CREATED({
+            message: 'Signup successfully',
+            metadata: await accessService.verifyAndSignup(req.body),
+            options: {limit: 3}
+        }).send(res);
     }
 
     async googleLogin(req, res) {
         new OK({
             message: 'Login Google successfully',
             metadata: await accessService.googleLogin(req.body)
+        }).send(res);
+    }
+
+    async forgotPassword(req, res) {
+        new OK({
+            message: 'Forgot password email sent',
+            metadata: await accessService.forgotPassword(req.body)
+        }).send(res);
+    }
+
+    async resetPassword(req, res) {
+        new OK({
+            message: 'Password reset successfully',
+            metadata: await accessService.resetPassword(req.body)
         }).send(res);
     }
 }

@@ -6,9 +6,12 @@ const {asyncHandler} = require("../../helpers/asyncHandler");
 const {authentication} = require("../../auth/authUtils");
 const router = express.Router();
 
-router.post('/shop/signup', asyncHandler(accessController.signup));
+router.post('/shop/send-otp', asyncHandler(accessController.sendOTP));
+router.post('/shop/verify-and-signup', asyncHandler(accessController.verifyAndSignup));
 router.post('/shop/login', asyncHandler(accessController.login));
 router.post('/shop/google', asyncHandler(accessController.googleLogin));
+router.post('/shop/forgot-password', asyncHandler(accessController.forgotPassword));
+router.post('/shop/reset-password', asyncHandler(accessController.resetPassword));
 
 // authentication //
 router.use(authentication)
