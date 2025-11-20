@@ -3,14 +3,15 @@
 const express = require('express');
 const accessController = require('../../controller/access.controller');
 const {asyncHandler} = require("../../helpers/asyncHandler");
-const productController = require("../../controller/product.controller");
 const router = express.Router();
+const {authentication} = require("../../auth/authUtils");
+
 
 router.post('/shop/signup', asyncHandler(accessController.signup));
 router.post('/shop/login', asyncHandler(accessController.login));
 
-router.get('/product/search/:keySearch', asyncHandler(productController.getListSearchProduct));
-router.get('/product', asyncHandler(productController.findAllProduct));
-router.get('/product/:product_id', asyncHandler(productController.findProduct));
+router.post('/shop/logout', authentication, asyncHandler(accessController.logout));
+router.post('/shop/refresh-token', authentication, asyncHandler(accessController.handleRefreshToken));
+
 
 module.exports = router;
