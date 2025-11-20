@@ -1,6 +1,14 @@
 'use strict'
 
 import _ from 'lodash';
+import mongoose from 'mongoose';
+
+const {Types} = mongoose;
+
+export const convertToObjectIdMongodb = (id) => {
+    return new Types.ObjectId(id);
+}
+
 export const getInfoData = ({fields = [], object = {}}) => {
     return _.pick(object, fields);
 }
