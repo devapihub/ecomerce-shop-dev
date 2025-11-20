@@ -8,8 +8,8 @@ const development = {
         host: process.env.DEV_DB_HOST || 'localhost',
         port: process.env.DEV_DB_PORT || '27017',
         name: process.env.DEV_DB_NAME || 'shop_dev',
-        username: process.env.PROD_DB_USERNAME,
-        password: process.env.PROD_DB_PASSWORD
+        username: process.env.PROD_DB_USERNAME || undefined,
+        password: process.env.PROD_DB_PASSWORD || undefined
     }
 }
 
