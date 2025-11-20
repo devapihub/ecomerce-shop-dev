@@ -3,16 +3,7 @@
 const express = require('express');
 const productController = require('../../controller/product.controller');
 const {asyncHandler} = require("../../helpers/asyncHandler");
-const {authentication} = require("../../auth/authUtils");
 const router = express.Router();
-
-router.get('/search/:keySearch', asyncHandler(productController.getListSearchProduct));
-router.get('', asyncHandler(productController.findAllProduct));
-router.get('/:product_id', asyncHandler(productController.findProduct));
-
-// authentication //
-router.use(authentication);
-///////////////////
 
 router.post('', asyncHandler(productController.createProduct));
 router.patch('/:product_id', asyncHandler(productController.updateProduct));
