@@ -4,7 +4,6 @@ const express = require('express');
 const {apiKey, permission} = require("../auth/checkAuth");
 const router = express.Router();
 
-router.use('/v1/api/key', require('./apiKey'));
 // check apiKey
 router.use(apiKey);
 // check permission
