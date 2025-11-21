@@ -251,6 +251,7 @@ class AccessService {
 
     static googleLogin = async ({token}) => {
         try {
+            console.log('Google token:', token);
             const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
             
             const ticket = await client.verifyIdToken({

@@ -103,4 +103,8 @@ export class DiscountService {
 
         return products;
     }
+
+    async getAllDiscountCodesWithProduct() {
+        //...
+    }
 }
