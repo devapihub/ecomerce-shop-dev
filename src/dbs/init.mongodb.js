@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 const {db: {host, port, name, username, password}} = require('../configs/config.mongodb');
-const connectString =  `mongodb://${host}:${port}/`;
+const connectString = `mongodb://${username}:${password}@${host}:${port}/${name}?authSource=admin`;
 const {countConnect} = require('../helpers/check.connect');
 
 class Database {
