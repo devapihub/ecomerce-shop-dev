@@ -1,28 +1,7 @@
-@url_dev=http://www.devapihub.com/v1/api
+@url_dev=http://localhost:3000/v1/api
 @apiKey=cc4932f42a72fc1d812fcd496ea05585
 @accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTFkODc2ZTIzNzdhNDhlYTVmZmI2MjciLCJlbWFpbCI6InRyaXZpcDAwMkBnbWFpbC5jb20iLCJpYXQiOjE3NjM1NDI4OTQsImV4cCI6MTc2MzcxNTY5NH0.ssuPbwlSmJAMaN4GbsAXo1Kb7JKcDxIhFaX2GKdEiR8
 @clientId=691d876e2377a48ea5ffb627
-
-#### Send OTP 
-POST {{url_dev}}/shop/send-otp
-Content-Type: application/json
-x-api-key: {{apiKey}}
-
-{
-  "name": "Admin Shop",
-  "email": "trivip002@gmail.com",
-  "password": "1234qwer"
-}
-
-#### Verify and Signup 
-POST {{url_dev}}/shop/verify-and-signup
-Content-Type: application/json
-x-api-key: {{apiKey}}
-
-{
-  "email": "trivip002@gmail.com",
-  "otpCode": "123456"
-}
 
 #### login
 POST {{url_dev}}/shop/login
@@ -48,23 +27,3 @@ Content-Type: application/json
 x-api-key: {{apiKey}}
 x-client-id: {{clientId}}
 x-rtoken-id: {{accessToken}}
-
-#### Forgot Password
-POST {{url_dev}}/shop/forgot-password
-Content-Type: application/json
-x-api-key: {{apiKey}}
-
-{
-  "email": "trivip002@gmail.com"
-}
-
-#### Reset Password
-POST {{url_dev}}/shop/reset-password
-Content-Type: application/json
-x-api-key: {{apiKey}}
-
-{
-  "token": "reset_token_from_email",
-  "newPassword": "newpassword123"
-}
-
