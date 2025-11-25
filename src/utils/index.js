@@ -6,8 +6,12 @@ import mongoose from 'mongoose';
 const {Types} = mongoose;
 
 export const convertToObjectIdMongodb = (id) => {
+    if (!Types.ObjectId.isValid(id)) {
+        throw new Error(`Invalid ObjectId: ${id}`);
+    }
+
     return new Types.ObjectId(id);
-}
+};
 
 export const getInfoData = ({fields = [], object = {}}) => {
     return _.pick(object, fields);

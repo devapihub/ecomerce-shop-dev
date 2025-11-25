@@ -66,9 +66,9 @@ export class DiscountService {
             throw new BadRequestError('Discount code not found or inactive!');
         }
 
-        const {discount_apply_to, discount_product_ids} = foundDiscount;
+        const {discount_applies_to, discount_product_ids} = foundDiscount;
         let products;
-        if (discount_apply_to === 'all') {
+        if (discount_applies_to === 'all') {
             products = await findAllProducts(
                 {
                     limit: +limit,
@@ -83,7 +83,7 @@ export class DiscountService {
             );
         }
 
-        if (discount_apply_to === 'specific') {
+        if (discount_applies_to === 'specific') {
             products = await findAllProducts(
                 {
                     filter: {
@@ -121,7 +121,7 @@ export class DiscountService {
             codeId, userId, shopId, products
         }
     ) {
-        const foundDiscount = checkDiscountExists({
+        const foundDiscount = await checkDiscountExists({
             filter: {
                 discount_code: codeId,
                 discount_shop_id: convertToObjectIdMongodb(shopId)
