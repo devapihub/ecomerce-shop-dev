@@ -1,9 +1,10 @@
 'use strict'
 
 import {discount} from "../models/discount.model.js";
-import {BadRequestError} from "../core/error.response";
-import {convertToObjectIdMongodb} from "../utils";
-import {findAllProducts} from "../models/repositories/product.repo";
+import {BadRequestError} from "../core/error.response.js";
+import {convertToObjectIdMongodb} from "../utils/index.js";
+import {findAllProducts} from "../models/repositories/product.repo.js";
+import {checkDiscountExists, findAllDiscountCodesUnselected} from "../models/repositories/discount.repo.js";
 
 export class DiscountService {
     static async createDiscount(payload) {
@@ -53,11 +54,7 @@ export class DiscountService {
         });
     }
 
-    static async updateDiscountCode() {
-        //...
-    }
-
-    static async getAllDiscountCodeWithProduct({code, shopId, userId, limit, page}) {
+    static async getAllDiscountCodeWithProduct({code, shopId, limit, page}) {
         const foundDiscount = await discount.findOne(
             {
                 discount_code: code,
@@ -69,9 +66,9 @@ export class DiscountService {
             throw new BadRequestError('Discount code not found or inactive!');
         }
 
-        const {discount_apply_to, discount_product_ids} = foundDiscount;
+        const {discount_applies_to, discount_product_ids} = foundDiscount;
         let products;
-        if (discount_apply_to === 'all') {
+        if (discount_applies_to === 'all') {
             products = await findAllProducts(
                 {
                     limit: +limit,
@@ -86,7 +83,7 @@ export class DiscountService {
             );
         }
 
-        if (discount_apply_to === 'specific') {
+        if (discount_applies_to === 'specific') {
             products = await findAllProducts(
                 {
                     filter: {
@@ -104,7 +101,122 @@ export class DiscountService {
         return products;
     }
 
-    async getAllDiscountCodesWithProduct() {
-        //...
+    static async getAllDiscountCodesByShop({limit, page, shopId}) {
+        return await findAllDiscountCodesUnselected(
+            {
+                filter: {
+                    discount_shop_id: convertToObjectIdMongodb(shopId),
+                    discount_is_active: true
+                },
+                limit: +limit,
+                page: +page,
+                sort: 'ctime',
+                unselect: ['__v', 'discount_shop_id']
+            }
+        );
+    }
+
+    static async getDiscountAmount(
+        {
+            codeId, userId, shopId, products
+        }
+    ) {
+        const foundDiscount = await checkDiscountExists({
+            filter: {
+                discount_code: codeId,
+                discount_shop_id: convertToObjectIdMongodb(shopId)
+            }
+        });
+
+        if (!foundDiscount) {
+            throw new BadRequestError('Discount code not found!');
+        }
+
+        const {
+            discount_is_active,
+            discount_max_uses,
+            discount_start_date,
+            discount_end_date,
+            discount_min_order_value,
+            discount_max_uses_per_user,
+            discount_users_used,
+            discount_type,
+            discount_value
+        } = foundDiscount;
+
+        if (!discount_is_active) {
+            throw new BadRequestError('Discount code is inactive!');
+        }
+
+        if (!discount_max_uses) {
+            throw new BadRequestError('Discount are out!');
+        }
+
+        if (new Date() < new Date(discount_start_date) || new Date() > new Date(discount_end_date)) {
+            throw new BadRequestError('Discount code has expired!');
+        }
+
+        let totalOrder = 0;
+        if (discount_min_order_value > 0) {
+            totalOrder = products.reduce((acc, product) => {
+                return acc + (product.price * product.quantity);
+            }, 0);
+
+            if (totalOrder < discount_min_order_value) {
+                throw new BadRequestError(`Order must be at least ${discount_min_order_value} to apply this discount!`);
+            }
+        }
+
+        if (discount_max_uses_per_user > 0) {
+            const userUsedCount = discount_users_used.find(user => user.userId = userId);
+            if (userUsedCount) {
+               /* if (userUsedCount.length >= discount_max_uses_per_user) {
+                    throw new BadRequestError('You have used this discount code the maximum number of times!');
+                }*/
+            }
+        }
+
+        const amount = discount_type === 'fixed_amount' ?
+            discount_value : totalOrder * (discount_value / 100);
+
+        return {
+            totalOrder,
+            discount: amount,
+            totalPrice: totalOrder - amount
+        }
+    }
+
+    static async deleteDiscount({shopId, codeId}) {
+        const deleted = await discount.findOneAndDelete({
+            discount_code: codeId,
+            discount_shop_id: convertToObjectIdMongodb(shopId)
+        }).lean();
+
+        if (!deleted) {
+            throw new BadRequestError('Discount code not found or already deleted!');
+        }
+
+        return deleted;
+    }
+
+    static async cancelDiscount({shopId, codeId, userId}) {
+        const foundDiscount = checkDiscountExists({
+            filter: {
+                discount_code: codeId,
+                discount_shop_id: convertToObjectIdMongodb(shopId)
+            }
+        });
+
+        if (!foundDiscount) {
+            throw new BadRequestError('Discount code not found!');
+        }
+
+        return await discount.findByIdAndUpdate(foundDiscount._id, {
+            $pull: {discount_users_used: {userId: userId}},
+            $inc: {
+                discount_uses_count: -1,
+                discount_max_uses: 1
+            }
+        }).exec();
     }
 }
