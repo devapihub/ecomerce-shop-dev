@@ -2,7 +2,7 @@
 
 import {product} from "../product.model.js";
 import mongoose from 'mongoose';
-import {getSelectData, unGetSelectData} from "../../utils/index.js";
+import {convertToObjectIdMongodb, getSelectData, unGetSelectData} from "../../utils/index.js";
 
 const {Types} = mongoose;
 
@@ -86,4 +86,8 @@ export const findProduct = async ({product_id, unSelect}) => {
         .select(unGetSelectData({unSelect}))
         .lean()
         .exec();
+}
+
+export const getProductById = async (productId) => {
+    return await product.findOne({_id: convertToObjectIdMongodb(productId)}).lean().exec();
 }

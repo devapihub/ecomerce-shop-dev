@@ -1,0 +1,39 @@
+@url_dev=http://localhost:3000/v1/api
+@apiKey=cc4932f42a72fc1d812fcd496ea05585
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTFkODc2ZTIzNzdhNDhlYTVmZmI2MjciLCJlbWFpbCI6InRyaXZpcDAwMkBnbWFpbC5jb20iLCJpYXQiOjE3NjM5OTM5NTksImV4cCI6MTc2NDE2Njc1OX0.GjILP9JjffTy8lSjE_YA7xuuTpe7QaMWcl4n9FnztCs
+@clientId=691d876e2377a48ea5ffb627
+
+### Get cart
+GET {{url_dev}}/cart
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+{
+  "userId": "691d876e2377a48ea5ffb627"
+}
+
+### Update cart
+POST {{url_dev}}/cart
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+{
+  "userId": "691d876e2377a48ea5ffb627",
+  "product": {
+    "productId": "691d88282377a48ea5ffb732",
+    "shopId": "691d876e2377a48ea5ffb627",
+    "quantity": 4,
+    "name": "abc",
+    "price": 250000
+  }
+}
+
+### Delete cart
+DELETE {{url_dev}}/cart
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+{
+  "userId": "691d876e2377a48ea5ffb627",
+  "productId": "691d88282377a48ea5ffb732"
+}
