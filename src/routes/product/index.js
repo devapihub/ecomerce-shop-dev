@@ -1,10 +1,8 @@
-'use strict'
-
-const express = require('express');
-const productController = require('../../controller/product.controller');
-const {asyncHandler} = require("../../helpers/asyncHandler");
+import express from 'express';
+import productController from '../../controller/product.controller.js';
+import {asyncHandler} from "../../helpers/asyncHandler.js";
 const router = express.Router();
-const {authentication} = require("../../auth/authUtils");
+import {authentication} from "../../auth/authUtils.js";
 
 router.get('/search/:keySearch', asyncHandler(productController.getListSearchProduct));
 
@@ -21,4 +19,4 @@ router.post('/unpublish/:id', authentication, asyncHandler(productController.unP
 router.get('/drafts/all', authentication, asyncHandler(productController.getAllDraftsForShop));
 router.get('/published/all', authentication, asyncHandler(productController.getAllPublishForShop));
 
-module.exports = router;
+export default router;

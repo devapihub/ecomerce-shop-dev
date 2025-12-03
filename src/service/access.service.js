@@ -1,22 +1,23 @@
-'use strict'
-
-const userModel = require('../models/user.model');
-const bcrypt = require('bcrypt');
-const crypto = require('node:crypto');
-const keyTokenService = require("./keyToken.service");
-const {createTokenPair, verifyJWT} = require("../auth/authUtils");
-const {getInfoData} = require("../utils");
-const {BadRequestError, AuthFailureError, ForbiddenError} = require("../core/error.response");
-const {findByEmail, generateOTP, verifyOTP: verifyOTPService} = require("./user.service");
-const {OAuth2Client} = require('google-auth-library');
-const EmailService = require("./email.service");
-const otpModel = require('../models/otp.model');
+import userModel from '../models/user.model.js';
+import bcrypt from 'bcrypt';
+import crypto from 'node:crypto';
+import KeyTokenService from "./keyToken.service.js";
+import {createTokenPair, verifyJWT} from "../auth/authUtils.js";
+import {getInfoData} from "../utils/index.js";
+import {BadRequestError, AuthFailureError, ForbiddenError} from "../core/error.response.js";
+import {findByEmail, generateOTP, verifyOTP as verifyOTPService} from "./user.service.js";
+import {OAuth2Client} from 'google-auth-library';
+import EmailService from "./email.service.js";
+import otpModel from '../models/otp.model.js';
 
 class AccessService {
     static handlerRefreshToken = async ({keystore, user, refreshToken}) => {
         const {userId, email} = user;
+        // console.log('refreshToken:', user);
+        console.log('keystore:', keystore);
+
         if (keystore.refreshTokensUsed.includes(refreshToken)) {
-            await keyTokenService.deleteKeyByUserId(userId);
+            await KeyTokenService.deleteKeyByUserId(userId);
             throw new ForbiddenError('Something wrong happen. Please re-login!');
         }
 
@@ -38,7 +39,7 @@ class AccessService {
             keystore.privateKey
         );
 
-        await keyTokenService.addRefreshTokenToUsed(keystore, tokens.refreshToken, refreshToken);
+        await KeyTokenService.addRefreshTokenToUsed(keystore, tokens.refreshToken, refreshToken);
 
         return {
             user: {userId, email},
@@ -46,7 +47,7 @@ class AccessService {
         }
     }
     static logout = async (keystore) => {
-        const delKey = await keyTokenService.removeKeyById(keystore._id);
+        const delKey = await KeyTokenService.removeKeyById(keystore._id);
         console.log('delete key result::', delKey);
         return delKey;
     }
@@ -74,7 +75,7 @@ class AccessService {
             privateKey
         );
 
-        await keyTokenService.createKeyToken({
+        await KeyTokenService.createKeyToken({
             userId: foundUser._id,
             refreshToken: tokens.refreshToken,
             privateKey,
@@ -164,7 +165,7 @@ class AccessService {
             privateKey
         );
         
-        const keyStore = await keyTokenService.createKeyToken({
+        const keyStore = await KeyTokenService.createKeyToken({
             userId: newUser._id,
             publicKey,
             privateKey,
@@ -308,7 +309,7 @@ class AccessService {
                 privateKey
             );
 
-            await keyTokenService.createKeyToken({
+            await KeyTokenService.createKeyToken({
                 userId: user._id,
                 refreshToken: tokens.refreshToken,
                 privateKey,
@@ -325,4 +326,4 @@ class AccessService {
     }
 }
 
-module.exports = AccessService;
+export default AccessService;

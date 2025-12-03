@@ -1,0 +1,199 @@
+@url_dev=http://localhost:3000/v1/api
+@apiKey=cc4932f42a72fc1d812fcd496ea05585
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTI3MGI3N2ZkYWUxNjMzOTRmYzU5NWYiLCJlbWFpbCI6InZldmVtaWMzNzVAYWlrdW5rdW4uY29tIiwiaWF0IjoxNzY0NjUwODY3LCJleHAiOjE3NjQ4MjM2Njd9.Cfu9NpGGDx8Bvc3VN5vlLZ5YzgrKdr12gbZU6r7Vg_I
+@clientId=69270b77fdae163394fc595f
+@shopId=692e6fab20cc5f963af4a753
+
+#### Get all shops
+GET {{url_dev}}/shop/all?page=1&limit=20&sort=-createdAt
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+
+#### Search shops by name
+GET {{url_dev}}/shop/search?keyword=test
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+
+#### Get shop by ID
+GET {{url_dev}}/shop/id/{{shopId}}
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+#### Get shop by slug
+GET {{url_dev}}/shop/slug/test-shop
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+#### Get my shop (Protected)
+GET {{url_dev}}/shop/my-shop
+Content-Type: application/json
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+#### Create shop (multipart/form-data) - With images
+POST {{url_dev}}/shop/create-shop
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="name"
+
+Cửa hàng điện thoại ABC
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="description"
+
+Chuyên cung cấp điện thoại chính hãng
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address[street]"
+
+123 Nguyễn Huệ
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address[wardCode]"
+
+26734
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address[wardName]"
+
+Phường Bến Nghé
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address[districtCode]"
+
+760
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address[districtName]"
+
+Quận 1
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address[provinceCode]"
+
+79
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address[provinceName]"
+
+Thành phố Hồ Chí Minh
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="avatar.jpg"
+Content-Type: image/jpeg
+
+< ../../test-files/avatar.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="banner"; filename="banner.jpg"
+Content-Type: image/jpeg
+
+< ../../test-files/banner.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+#### Create shop without images (JSON)
+POST {{url_dev}}/shop/create-shop
+Content-Type: application/json
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+{
+  "name": "My Test Shop",
+  "description": "This is a test shop description",
+  "address": {
+    "street": "123 Test Street",
+    "wardCode": "00101",
+    "wardName": "Phường Bến Nghé",
+    "districtCode": "760",
+    "districtName": "Quận 1",
+    "provinceCode": "79",
+    "provinceName": "Thành phố Hồ Chí Minh"
+  }
+}
+
+#### Update shop (Protected - Multipart Form Data)
+PATCH {{url_dev}}/shop/id/{{shopId}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="name"
+
+Updated Shop Name
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="description"
+
+Updated shop description
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address[street]"
+
+456 Updated Street
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address[wardCode]"
+
+00102
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address[wardName]"
+
+Phường Đa Kao
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address[districtCode]"
+
+760
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address[districtName]"
+
+Quận 1
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address[provinceCode]"
+
+79
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address[provinceName]"
+
+Thành phố Hồ Chí Minh
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="avatar-updated.jpg"
+Content-Type: image/jpeg
+
+< ../../test-files/banner.jpg 
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+#### Update shop without images (Protected - JSON)
+PATCH {{url_dev}}/shop/id/{{shopId}}
+Content-Type: application/json
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+{
+  "name": "Updated Shop Name",
+  "description": "Updated shop description",
+  "address": {
+    "street": "456 Updated Street",
+    "wardCode": "00102",
+    "wardName": "Phường Đa Kao",
+    "districtCode": "760",
+    "districtName": "Quận 1",
+    "provinceCode": "79",
+    "provinceName": "Thành phố Hồ Chí Minh"
+  }
+}
+
+#### Update shop - only name (Protected - JSON)
+PATCH {{url_dev}}/shop/id/{{shopId}}
+Content-Type: application/json
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+{
+  "name": "Only Name Updated"
+}
+
+#### Delete shop (Protected)
+DELETE {{url_dev}}/shop/id/{{shopId}}
+Content-Type: application/json
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+authorization: {{accessToken}}

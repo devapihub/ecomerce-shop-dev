@@ -1,5 +1,3 @@
-'use strict'
-
 const development = {
     app: {
         port: process.env.DEV_APP_PORT || 3055
@@ -25,6 +23,6 @@ const production = {
         password: process.env.PROD_DB_PASSWORD
     }
 }
-const config = {development, production}
+const config = {development, production};
 const env = process.env.NODE_ENV || 'development';
-module.exports = config[env];
+export default config[env];
