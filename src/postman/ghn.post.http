@@ -1,0 +1,45 @@
+@url_dev=http://localhost:3000/v1/api
+@apiKey=cc4932f42a72fc1d812fcd496ea05585
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTI3MGI3N2ZkYWUxNjMzOTRmYzU5NWYiLCJlbWFpbCI6InZldmVtaWMzNzVAYWlrdW5rdW4uY29tIiwiaWF0IjoxNzY0NjUwODY3LCJleHAiOjE3NjQ4MjM2Njd9.Cfu9NpGGDx8Bvc3VN5vlLZ5YzgrKdr12gbZU6r7Vg_I
+@clientId=69270b77fdae163394fc595f
+
+### ============================================
+### GHN API - Lấy địa chỉ (Tỉnh/Thành phố, Quận/Huyện, Phường/Xã)
+### ============================================
+
+#### Get all provinces (Lấy danh sách tỉnh/thành phố)
+GET {{url_dev}}/ghn/provinces
+Content-Type: application/json
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+#### Get districts by province_id (Lấy danh sách quận/huyện theo tỉnh/thành phố)
+# Ví dụ: province_id = 201 (Hà Nội)
+GET {{url_dev}}/ghn/districts?province_id=201
+Content-Type: application/json
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+#### Get districts by province_id - Hồ Chí Minh
+GET {{url_dev}}/ghn/districts?province_id=202
+Content-Type: application/json
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+#### Get wards by district_id (Lấy danh sách phường/xã theo quận/huyện)
+# Ví dụ: district_id = 1442 (Quận 1, Hồ Chí Minh)
+GET {{url_dev}}/ghn/wards?district_id=1442
+Content-Type: application/json
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+#### Get wards by district_id - Quận Ba Đình, Hà Nội
+GET {{url_dev}}/ghn/wards?district_id=1444
+Content-Type: application/json
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+authorization: {{accessToken}}

@@ -1,6 +1,4 @@
-'use strict'
-
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
 class EmailService {
     // Tạo transporter (cấu hình email)
@@ -82,4 +80,4 @@ class EmailService {
     }
 }
 
-module.exports = EmailService;
+export default EmailService;

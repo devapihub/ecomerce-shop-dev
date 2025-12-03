@@ -1,7 +1,7 @@
 'use strict'
 
 import {discount} from "../models/discount.model.js";
-import {BadRequestError} from "../core/error.response.js";
+import {BadRequestError, NotFoundError, ForbiddenError} from "../core/error.response.js";
 import {convertToObjectIdMongodb} from "../utils/index.js";
 import {findAllProducts} from "../models/repositories/product.repo.js";
 import {checkDiscountExists, findAllDiscountCodesUnselected} from "../models/repositories/discount.repo.js";
@@ -20,13 +20,16 @@ export class DiscountService {
 
         const foundDiscount = await discount.findOne(
             {
-                discount_code: code,
-                discount_shop_id: convertToObjectIdMongodb(shopId)
+                discount_code: code
             }
         ).lean();
 
-        if (foundDiscount && foundDiscount.discount_is_active) {
-            throw new BadRequestError('Discount code already exists for this shop!');
+        if (foundDiscount) {
+            if (foundDiscount.discount_is_active) {
+                throw new BadRequestError('Discount code already exists and is active!');
+            } else {
+                throw new BadRequestError('Discount code already exists (inactive). Please use a different code or reactivate the existing one.');
+            }
         }
 
         if (new Date(start_date) >= new Date(end_date)) {
@@ -186,37 +189,58 @@ export class DiscountService {
         }
     }
 
-    static async deleteDiscount({shopId, codeId}) {
-        const deleted = await discount.findOneAndDelete({
-            discount_code: codeId,
-            discount_shop_id: convertToObjectIdMongodb(shopId)
-        }).lean();
-
-        if (!deleted) {
-            throw new BadRequestError('Discount code not found or already deleted!');
+    static async deleteDiscount({code, shopId}) {
+        if (!code) {
+            throw new BadRequestError('Discount code is required!');
         }
 
-        return deleted;
-    }
+        if (!shopId) {
+            throw new BadRequestError('Shop ID is required!');
+        }
 
-    static async cancelDiscount({shopId, codeId, userId}) {
-        const foundDiscount = checkDiscountExists({
+        const foundDiscount = await checkDiscountExists({
             filter: {
-                discount_code: codeId,
-                discount_shop_id: convertToObjectIdMongodb(shopId)
+                discount_code: code
             }
         });
 
         if (!foundDiscount) {
-            throw new BadRequestError('Discount code not found!');
+            throw new NotFoundError('Discount code not found!');
         }
 
+        if (foundDiscount.discount_shop_id.toString() !== convertToObjectIdMongodb(shopId).toString()) {
+            throw new ForbiddenError('You do not have permission to delete this discount!');
+        }
+        const deleted = await discount.findOneAndDelete({_id: foundDiscount._id}).lean();
+
+        return deleted;
+    }
+
+    static async cancelDiscount({code, userId}) {
+        if (!code) {
+            throw new BadRequestError('Discount code is required!');
+        }
+
+        if (!userId) {
+            throw new BadRequestError('User ID is required!');
+        }
+
+        const foundDiscount = await checkDiscountExists({
+            filter: {
+                discount_code: code
+            }
+        });
+        
+        if (!foundDiscount) {
+            throw new NotFoundError('Discount code not found!');
+        }
+3 
         return await discount.findByIdAndUpdate(foundDiscount._id, {
             $pull: {discount_users_used: {userId: userId}},
             $inc: {
                 discount_uses_count: -1,
                 discount_max_uses: 1
             }
-        }).exec();
+        }, { new: true }).lean();
     }
 }

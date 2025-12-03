@@ -31,7 +31,18 @@ export class ProductFactory {
         return new productClass(payload).createProduct();
     }
 
-    static updateProduct(productType, productId, payload) {
+    static async updateProduct(productType, productId, payload) {
+        const { product_shop } = payload;
+        
+        const foundProduct = await product.findById(productId);
+        if (!foundProduct) {
+            throw new BadRequestError('San phẩm không tồn tại');
+        }
+        
+        if (foundProduct.product_shop.toString() !== product_shop.toString()) {
+            throw new BadRequestError('Bạn không có quyền cập nhật sản phẩm này');
+        }
+        
         const productClass = ProductFactory.productRegistry[productType];
         if (!productClass) {
             throw new Error(`Unsupported product type: ${productType}`);
@@ -39,7 +50,16 @@ export class ProductFactory {
         return new productClass(payload).updateProduct(productId);
     }
 
-    static deleteProduct(productType, productId) {
+    static async deleteProduct(productType, productId, productShopId) {
+        const foundProduct = await product.findById(productId);
+        if (!foundProduct) {
+            throw new BadRequestError('San phẩm không tồn tại');
+        }
+        
+        if (foundProduct.product_shop.toString() !== productShopId.toString()) {
+            throw new BadRequestError('Bạn không có quyền xóa sản phẩm này');
+        }
+        
         const productClass = ProductFactory.productRegistry[productType];
         if (!productClass) {
             throw new Error(`Unsupported product type: ${productType}`);
@@ -160,7 +180,8 @@ class ClothingModel extends Product {
                 model: clothing
             });
         }
-
+        delete objectParams.product_shop;
+  
         return await super.updateProduct(productId, updateNestedObject(objectParams));
     }
 
@@ -204,6 +225,7 @@ class ElectronicModel extends Product {
                 model: electronic
             });
         }
+        delete objectParams.product_shop;
 
         return await super.updateProduct(productId, updateNestedObject(objectParams));
     }
@@ -248,6 +270,7 @@ export class FurnitureModel extends Product {
                 model: furniture
             });
         }
+        delete objectParams.product_shop;
 
         return await super.updateProduct(productId, updateNestedObject(objectParams));
     }

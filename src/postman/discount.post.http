@@ -61,3 +61,17 @@ x-api-key: {{apiKey}}
 GET {{url_dev}}/discount/list_product_code?code=SUMMER20&shopId=691d876e2377a48ea5ffb627
 Content-Type: application/json
 x-api-key: {{apiKey}}
+
+#### Delete discount
+DELETE {{url_dev}}/discount/SUMMER20
+Content-Type: application/json
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+authorization: {{accessToken}}
+
+### Cancel Discount
+POST {{url_dev}}/discount/cancel/SUMMER20
+Content-Type: application/json
+x-api-key: {{apiKey}}
+x-client-id: {{clientId}}
+authorization: {{accessToken}}

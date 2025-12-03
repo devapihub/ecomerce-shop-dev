@@ -1,6 +1,4 @@
-'use strict';
-
-const { model, Schema } = require('mongoose');
+import { model, Schema } from 'mongoose';
 
 const DOCUMENT_NAME = "OTP";
 const COLLECTION_NAME = "otps";
@@ -39,4 +37,4 @@ OTPSchema.index({otpExpires: 1}, {expireAfterSeconds: 0});
 
 OTPSchema.index({email: 1, type: 1});
 
-module.exports = model(DOCUMENT_NAME, OTPSchema);
+export default model(DOCUMENT_NAME, OTPSchema);

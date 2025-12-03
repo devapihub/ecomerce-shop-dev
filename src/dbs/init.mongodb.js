@@ -1,9 +1,8 @@
-'use strict'
-
-const mongoose = require('mongoose');
-const {db: {host, port, name, username, password}} = require('../configs/config.mongodb');
+import mongoose from 'mongoose';
+import config from '../configs/config.mongodb.js';
+const {db: {host, port, name, username, password}} = config;
 const connectString = `mongodb://${username}:${password}@${host}:${port}/${name}?authSource=admin`;
-const {countConnect} = require('../helpers/check.connect');
+import {countConnect} from '../helpers/check.connect.js';
 
 class Database {
     constructor() {
@@ -34,4 +33,4 @@ class Database {
 }
 
 const instanceMongoDb = Database.getInstance();
-module.exports = instanceMongoDb
+export default instanceMongoDb;

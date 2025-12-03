@@ -1,9 +1,7 @@
-'use strict'
-
-const JWT = require('jsonwebtoken');
-const {asyncHandler} = require("../helpers/asyncHandler");
-const {AuthFailureError, NotfoundError} = require("../core/error.response");
-const {findByUserId} = require("../service/keyToken.service");
+import JWT from 'jsonwebtoken';
+import {asyncHandler} from "../helpers/asyncHandler.js";
+import {AuthFailureError, NotFoundError} from "../core/error.response.js";
+import KeyTokenService from "../service/keyToken.service.js";
 const HEADER = {
     API_KEY: 'x-api-key',
     CLIENT_ID: 'x-client-id',
@@ -39,9 +37,9 @@ const authentication = asyncHandler(async (req, res, next) => {
         throw new AuthFailureError('Invalid request!');
     }
 
-    const keyStore = await findByUserId(userId);
+    const keyStore = await KeyTokenService.findByUserId(userId);
     if (!keyStore) {
-        throw new NotfoundError('Invalid request! No key store found');
+        throw new NotFoundError('Invalid request! No key store found');
     }
 
     if (req.headers[HEADER.REFRESH_TOKEN]) {
@@ -83,8 +81,8 @@ const verifyJWT = async (token, keySecret) => {
     return await JWT.verify(token, keySecret);
 }
 
-module.exports = {
+export {
     createTokenPair,
     authentication,
     verifyJWT
-}
+};

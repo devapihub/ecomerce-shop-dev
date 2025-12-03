@@ -1,6 +1,4 @@
-'use strict'
-
-const {Schema, model} = require('mongoose');
+import {Schema, model} from 'mongoose';
 const DOCUMENT_NAME = "ApiKey";
 const COLLECTION_NAME = "apiKeys";
 
@@ -24,4 +22,4 @@ const apiKeySchema = new Schema({
     collection: COLLECTION_NAME
 });
 
-module.exports = model(DOCUMENT_NAME, apiKeySchema);
+export default model(DOCUMENT_NAME, apiKeySchema);

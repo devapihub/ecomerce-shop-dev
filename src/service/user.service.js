@@ -1,8 +1,6 @@
-'use strict'
-
-const userModel = require('../models/user.model');
-const otpModel = require('../models/otp.model');
-const crypto = require('node:crypto');
+import userModel from '../models/user.model.js';
+import otpModel from '../models/otp.model.js';
+import crypto from 'node:crypto';
 
 const findByEmail = async ({email, select = {
     password: 1,
@@ -71,8 +69,8 @@ const verifyOTP = async ({email, otpCode, type = 'signup'}) => {
     return true;
 }
 
-module.exports = {
+export {
     findByEmail,
     generateOTP,
     verifyOTP
-}
+};

@@ -1,6 +1,5 @@
-'use strict'
-const keyTokenModel = require('../models/keytoken.model');
-const {Types} = require('mongoose');
+import keyTokenModel from '../models/keytoken.model.js';
+import {Types} from 'mongoose';
 
 class KeyTokenService {
     static createKeyToken = async ({userId, publicKey, privateKey, refreshToken}) => {
@@ -50,4 +49,4 @@ class KeyTokenService {
     }
 }
 
-module.exports = KeyTokenService
+export default KeyTokenService;

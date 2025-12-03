@@ -1,7 +1,5 @@
-'use strict'
-
-const {SuccessResponse} = require("../core/success.response");
-const {createApiKey} = require("../service/apiKey.service");
+import {SuccessResponse} from "../core/success.response.js";
+import {createApiKey} from "../service/apiKey.service.js";
 
 
 class ApiKeyController {
@@ -13,4 +11,4 @@ class ApiKeyController {
     }
 }
 
-module.exports = new ApiKeyController();
+export default new ApiKeyController();

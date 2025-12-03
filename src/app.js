@@ -1,9 +1,10 @@
-require('dotenv').config();
-const express = require('express');
+import dotenv from 'dotenv'; 
+dotenv.config();
+import express from 'express';
 const app = express();
-const morgan = require('morgan');
-const helmet = require("helmet");
-const compression = require("compression");
+import morgan from 'morgan';
+import helmet from "helmet";
+import compression from "compression";
 
 // init middlewares
 app.use(morgan('dev'));
@@ -13,13 +14,13 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 // init db
-require('./dbs/init.mongodb');
-const {checkOverload} = require('./helpers/check.connect');
-const e = require("express");
+import './dbs/init.mongodb.js';
+import {checkOverload} from './helpers/check.connect.js';
 checkOverload();
 
 // init routes
-app.use('/', require('./routes'));
+import routes from './routes/index.js';
+app.use('/', routes);
 
 // handling errors
 app.use((req, res, next) => {
@@ -37,4 +38,4 @@ app.use((err, req, res, next) => {
     });
 })
 
-module.exports = app
+export default app;

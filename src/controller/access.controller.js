@@ -1,6 +1,5 @@
-'use strict'
-const accessService = require('../service/access.service');
-const {OK, CREATED} = require('../core/success.response');
+import accessService from '../service/access.service.js';
+import {OK, CREATED} from '../core/success.response.js';
 
 class AccessController {
 
@@ -66,4 +65,4 @@ class AccessController {
     }
 }
 
-module.exports = new AccessController();
+export default new AccessController();

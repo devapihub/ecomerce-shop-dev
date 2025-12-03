@@ -1,7 +1,5 @@
-'use strict'
-
-const apiKeyModel = require('../models/apiKey.model');
-const crypto = require('node:crypto');
+import apiKeyModel from '../models/apiKey.model.js';
+import crypto from 'node:crypto';
 const findById = async (key) => {
     return apiKeyModel.findOne({key, status: true}).lean();
 }
@@ -13,4 +11,4 @@ const createApiKey = async () => {
     });
 }
 
-module.exports = {findById, createApiKey}
+export {findById, createApiKey};
